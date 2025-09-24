@@ -1,0 +1,73 @@
+.visualizer-container {
+  position: relative;
+  margin-top: 20px;
+  padding-bottom: 40px;
+}
+
+.lap-numbers {
+  position: relative;
+  height: 20px;
+  margin-bottom: 10px;
+}
+
+.lap-number {
+  position: absolute;
+  top: 0;
+  font-size: 12px;
+  transform: translateX(-50%);
+}
+
+.drivers {
+  margin-top: 10px;
+}
+
+.driver-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.driver-name {
+  width: 40px;
+  font-weight: bold;
+}
+
+.stints-row {
+  position: relative;
+  flex-grow: 1;
+  height: 24px;
+  background: #eee; /* default gray background */
+  margin-left: 10px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.stint-bar-absolute {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 20px;
+  font-size: 14px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-color {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #333;
+}
