@@ -1,37 +1,43 @@
 // src/App.js
 import React, { useState } from "react";
-import RaceVisualizer from "./components/RaceVisualizer";
+import RaceVisualizer from "./RaceVisualizer";   // FIXED IMPORT PATH
 
 function App() {
-  const [year, setYear] = useState(2025);
+  const [year, setYear] = useState(2023);        // use real race year
   const [gp, setGp] = useState("Miami");
-  const [strategyData, setStrategyData] = useState([]);
+  const [strategyData, setStrategyData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchStrategy = async () => {
     setLoading(true);
     setError(null);
+    setStrategyData(null);
 
     try {
       const response = await fetch(
         `http://localhost:5001/strategy?year=${year}&gp=${gp}`
       );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
       const data = await response.json();
-      setStrategyData(data);
+      console.log("API response:", data);
 
-      if (data.length === 0) {
-        setError("No strategy data available.");
+      if (!response.ok) {
+        setError(data.error || "API error");
+        return;
       }
+
+      // Store ONLY the strategy array (what your visualizer expects)
+      if (!data.strategy || data.strategy.length === 0) {
+        setError("No strategy data available.");
+        return;
+      }
+
+      setStrategyData(data.strategy);
+
     } catch (err) {
       console.error("Error fetching strategy:", err);
       setError("Failed to fetch strategy data");
-      setStrategyData([]);
     } finally {
       setLoading(false);
     }
@@ -64,15 +70,11 @@ function App() {
       </div>
 
       {loading && <p>Loading strategy...</p>}
-
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {strategyData.length > 0 && (
-        <RaceVisualizer strategyData={strategyData} />
-      )}
-
-      {strategyData.length === 0 && !loading && !error && (
-        <p>No strategy data available.</p>
+      {/* Only show graph if strategy exists */}
+      {strategyData && (
+        <RaceVisualizer strategy={strategyData} />
       )}
     </div>
   );
